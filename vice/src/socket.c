@@ -420,6 +420,11 @@ vice_network_socket_t *vice_network_server(
             break;
         }
 
+        struct linger sl;
+        sl.l_onoff = 1;
+        sl.l_linger = 0;
+        setsockopt(sockfd, SOL_SOCKET, SO_LINGER, &sl, sizeof(sl));
+
         /*
             Fix the "Address In Use" error upon reconnecting to tcp socket monitor port
             by setting SO_REUSEPORT/ADDR options on socket before bind()
